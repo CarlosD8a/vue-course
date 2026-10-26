@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="myApp">
+        <h1>Batman quotes {{totalQuotes}}</h1>
+        <input @keypress.enter="addQuotes" type="text" placeholder="add quote" v-model="newQuote">
+        <br>
+        <br>
+        <button type="button" @click="showAuthor = !showAuthor">Toggle Author</button>
+        <!-- <button type="button" @:click="addQuotes">Add quote</button> -->
+
+        <hr>
+        <ul>
+            <li v-for="({quote, author}, index) in quotes">
+                {{index+1}} - {{quote}}
+                <blockquote v-if="showAuthor">{{author}}</blockquote>
+            </li>
+        </ul>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="app.js"></script>
+
+</body>
+
+</html>
