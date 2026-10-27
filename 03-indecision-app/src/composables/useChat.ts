@@ -14,6 +14,7 @@ export const useChat = () => {
   const isTyping = ref(false);
 
   const onNewMessage = async (text: string) => {
+    if (text.length === 0) return;
     message.value.push({
       id: new Date().getTime(),
       itsMine: true,
@@ -24,7 +25,7 @@ export const useChat = () => {
     // aqui puede ir la logica para agregar las burbujas
 
     isTyping.value = true;
-    await sleep(2);
+    await sleep(1.5);
 
     const { answer, image } = await getResponde();
     message.value.push({
