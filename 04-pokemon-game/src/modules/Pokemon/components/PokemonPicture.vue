@@ -1,13 +1,27 @@
 <template>
-  <section class="h-60 flex justify-center items-center">
-    <img
-      class="brightness-0 h-125"
-      src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/132.png"
-    />
+  <section class="h-90 flex justify-center items-center overflow-hidden">
+    <img v-if="!showImage" class="brightness-0 h-90" :src="pokemonImage" />
+    <img v-else class="fade-in h-90" :src="pokemonImage" />
   </section>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { computed } from 'vue';
+
+interface Props {
+  pokemonId: number;
+  showImage?: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  showImage: false,
+});
+
+const pokemonImage = computed(
+  () =>
+    `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/${props.pokemonId}.png`,
+);
+</script>
 
 <style lang="css" scoped>
 img {
