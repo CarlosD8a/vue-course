@@ -1,3 +1,4 @@
+import './assets/css-pokemon-gameboy.css';
 import './assets/styles.css';
 import './assets/animations.css';
 

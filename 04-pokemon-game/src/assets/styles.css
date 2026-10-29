@@ -1,5 +1,167 @@
-@import 'tailwindcss';
+/* Estilos propios: solo disposición (layout). El aspecto viene de css-pokemon-gameboy.css */
 
-html, body{
-    background-color: #f1f1f1;
+/* El framework le pone padding: 4em al body. Sumado al min-height: 100vh de las
+   pantallas, la página mide más que la ventana y aparece el scroll. */
+html,
+body {
+  margin: 0;
+}
+
+body {
+  padding: 0;
+}
+
+#app {
+  min-height: 100vh;
+  min-height: 100dvh; /* en móvil descuenta la barra del navegador; 100vh queda de respaldo */
+}
+
+.screen {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* El framework define .framed con width:100%, lo limitamos a un cuadro centrado */
+.screen .framed {
+  width: 90%;
+  max-width: 24rem;
+  margin: 0 auto;
+}
+
+.screen .buttons {
+  align-items: stretch;
+  min-width: 10rem;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.blink {
+  animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+/* Pantalla principal: cabecera arriba, imagen a la izquierda y opciones a la derecha */
+.screen .game {
+  width: 95%;
+  max-width: 80rem;
+  font-size: 1.2em; /* tamaño del texto de la pantalla principal */
+}
+
+.screen .game .framed {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+}
+
+.game-body {
+  display: grid;
+  grid-template-columns: 2fr 3fr; /* la columna de opciones es más ancha para que quepan los nombres */
+  gap: 1rem;
+}
+
+/* Menú tipo batalla: cuadrícula fija de 2 columnas, celdas siempre del mismo tamaño.
+   Se llena de izquierda a derecha y de arriba abajo, sin importar cuántas opciones haya
+   ni qué tan largo sea cada nombre. */
+.game-body .buttons.compact {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(11em, 1fr));
+  grid-auto-rows: 3em;
+}
+
+.game-body .buttons.compact li {
+  margin: 0.25em;
+  min-width: 0;
+}
+
+.game-body .buttons li button {
+  display: flex;
+  align-items: center; /* texto centrado verticalmente en la celda */
+  width: 100%;
+  height: 100%;
+  font-size: 1em;
+  text-align: left;
+  padding-left: 1.5em; /* espacio fijo para la flecha de selección */
+  white-space: nowrap;
+}
+
+/* La flecha del framework está dibujada con box-shadow: cada "pixel" mide width/height,
+   pero se separa de los demás 1em (= font-size). Si font-size y width no son iguales,
+   quedan huecos y se ve pixeleada. Por eso width/height = 1em siempre. */
+.game-body .buttons li button:hover::before {
+  font-size: 3px;
+  width: 1em;
+  height: 1em;
+  left: -1em;
+  top: calc(50% - 3.5em); /* la flecha mide 7 pixeles de alto: la centramos */
+}
+
+/* ---------- Responsivo ---------- */
+
+/* Pantallas táctiles: no hay "hover", la flecha se quedaba pegada al tocar. La ocultamos;
+   la respuesta correcta sigue marcándose con su propia flecha (PokemonOptions.vue). */
+@media (hover: none) {
+  button:hover::before {
+    content: none;
+  }
+}
+
+/* Tablet y celular en vertical: todo apilado y opciones en una sola columna */
+@media (max-width: 700px) {
+  .screen .game {
+    font-size: 1em;
+  }
+
+  .screen .game .framed {
+    padding: 0.5em;
+  }
+
+  .game-header {
+    flex-wrap: wrap; /* Dificultad y Score bajan a dos líneas si no caben */
+    gap: 0.25em 1em;
+    margin-bottom: 0.5rem;
+  }
+
+  .game-body {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .game-body .buttons.compact {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 2.5em;
+  }
+}
+
+/* Celular en horizontal: mucho ancho y poco alto, volvemos a imagen | opciones */
+@media (max-height: 500px) and (orientation: landscape) {
+  .screen .game {
+    font-size: 0.8em;
+  }
+
+  .game-body {
+    grid-template-columns: 2fr 3fr;
+  }
+
+  .game-body .buttons.compact {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 2.2em;
+  }
 }

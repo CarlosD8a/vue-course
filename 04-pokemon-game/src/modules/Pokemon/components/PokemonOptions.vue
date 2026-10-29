@@ -1,21 +1,18 @@
 <template>
-  <section class="flex flex-col">
-    <button
-      v-for="{ name, id } in options"
-      :key="id"
-      @click="$emit('selectedOption', id)"
-      :class="[
-        'capitalize disabled:shadow-none disabled:opacity-60',
-        {
-          correct: id === answer && blockSelection,
-          incorrect: id !== answer && blockSelection,
-        },
-      ]"
-      :disabled="blockSelection"
-    >
-      {{ name }}
-    </button>
-  </section>
+  <ul class="buttons compact">
+    <li v-for="{ name, id } in options" :key="id">
+      <button
+        @click="$emit('selectedOption', id)"
+        :class="{
+          correct: blockSelection && id === answer,
+          incorrect: blockSelection && id !== answer,
+        }"
+        :disabled="blockSelection"
+      >
+        {{ name }}
+      </button>
+    </li>
+  </ul>
 </template>
 
 <script setup lang="ts">
@@ -36,16 +33,22 @@ defineEmits<{
 </script>
 
 <style scoped>
-@reference "../../../assets/styles.css";
-button {
-  @apply bg-white shadow-md rounded-lg p-3 m-2 cursor-pointer w-40 text-center transition-all hover:bg-gray-100;
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-.correct {
-  @apply bg-green-800 text-white;
+/* Al terminar la ronda se marca la correcta y las incorrectas */
+button.correct {
+  opacity: 1;
+  font-weight: bold;
 }
 
-.incorrect {
-  @apply bg-red-700 text-white;
+button.correct::before {
+  content: '▶ ';
+}
+
+button.incorrect {
+  text-decoration: line-through;
 }
 </style>
