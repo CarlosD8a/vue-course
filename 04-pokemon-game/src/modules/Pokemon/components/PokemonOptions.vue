@@ -1,6 +1,7 @@
 <template>
   <ul class="buttons compact">
     <li v-for="{ name, id } in options" :key="id">
+      <!-- solo cuando se hace clic es cuando se emite  -->
       <button
         @click="$emit('selectedOption', id)"
         :class="{
