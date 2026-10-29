@@ -35,7 +35,10 @@ export const usePokemons = () => {
     return PokemonsArray.sort(() => Math.random() - 0.5);
   };
 
-  const getNextRound = (howMany: number = 4) => {
+  const getNextRound = async (howMany: number = 4) => {
+    if (pokemons.value.length < howMany) {
+      pokemons.value = await getPokemons();
+    }
     dificult.value = howMany;
     gameStatus.value = GameStatus.Playing;
     pokemonsOptions.value = pokemons.value.slice(0, howMany); // lo que hace es tomar del cero al howmany y guardarlos en la nueva variable pero no toca el arreglo original
