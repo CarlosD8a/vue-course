@@ -1,5 +1,4 @@
 <template>
-  <!-- Fase 2: pantalla de carga -->
   <section v-if="isLoading || randomPokemon?.id === null" class="screen">
     <div class="framed secondary">
       <p>Espere un momento</p>
@@ -7,7 +6,6 @@
     </div>
   </section>
 
-  <!-- Fase 3: selección de dificultad -->
   <section v-else-if="gameStatus === GameStatus.Config" class="screen">
     <div class="framed secondary">
       <p>Selecciona dificultad</p>
