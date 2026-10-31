@@ -3,7 +3,7 @@ import { usePokemons } from '@/modules/Pokemon/composables/usePokemonGame';
 import { GameStatus } from '@/modules/Pokemon/interfaces';
 import PokemonGame from '@/modules/Pokemon/pages/PokemonGame.vue';
 import { mount } from '@vue/test-utils';
-import type { Mock } from 'vitest';
+import { should, type Mock } from 'vitest';
 
 vi.mock('@/modules/Pokemon/composables/usePokemonGame', () => ({
   usePokemons: vi.fn(),
@@ -62,12 +62,55 @@ describe('<PokemonGame/>', () => {
     });
     const pokemons = pokemonsOptions.map((pokemon) => pokemon.name);
     const wrapper = mount(PokemonGame);
-    console.log(wrapper.html());
+    // console.log(wrapper.html());
+
     expect(wrapper.find('section.picture').exists()).toBe(true);
     const buttons = wrapper.findAll('button');
     expect(buttons.length).toBe(4);
     buttons.forEach((button) => {
       expect(pokemons).toContain(button.text());
     });
+  });
+
+  test('should render button for a new game', () => {
+    (usePokemons as Mock).mockReturnValue({
+      randomPokemon: pokemonsOptions.at(0),
+      isLoading: false,
+      gameStatus: GameStatus.Lost,
+      pokemonsOptions: pokemonsOptions,
+      score: 0,
+      difficultyName: 'Easy',
+      checkAnswer: vi.fn(),
+      getNextRound: vi.fn(),
+      restarGame: vi.fn(),
+    });
+    const wrapper = mount(PokemonGame);
+    // console.log(wrapper.html());
+    const buttonLost = wrapper.find('[class="buttons"]');
+    const buttonLostText = buttonLost.find('button');
+    // console.log(buttonLost.html());
+    // console.log(buttonLostText.html());
+    expect(buttonLostText.text()).toBe('New Game');
+  });
+
+  test('should call the getNextRound function when the button is clicked', async () => {
+    const restarGameSpy = vi.fn();
+    (usePokemons as Mock).mockReturnValue({
+      randomPokemon: pokemonsOptions.at(0),
+      isLoading: false,
+      gameStatus: GameStatus.Lost,
+      pokemonsOptions: pokemonsOptions,
+      score: 0,
+      difficultyName: 'Easy',
+      checkAnswer: vi.fn(),
+      getNextRound: vi.fn(),
+      restarGame: restarGameSpy,
+    });
+    const wrapper = mount(PokemonGame);
+    const buttonLost = wrapper.find('[class="buttons"]');
+    const buttonLostText = buttonLost.find('button');
+    await buttonLostText.trigger('click');
+    // console.log(wrapper.html());
+    expect(restarGameSpy).toHaveBeenCalled();
   });
 });
