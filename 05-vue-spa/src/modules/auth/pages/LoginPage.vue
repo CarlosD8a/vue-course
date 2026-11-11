@@ -35,7 +35,8 @@
       </div>
       <!-- Login Button -->
       <button
-        type="submit"
+      @click="onLogin"
+        type="button"
         class="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-full"
       >
         Login
@@ -49,5 +50,16 @@
 </template>
 
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
+const router = useRouter()
+
+const onLogin = ()=>{
+  localStorage.setItem('userName','ABC-123')
+  const lastPath = localStorage.getItem('lastPath') ?? '/'
+  // router.replace({
+  //   name:'home'
+
+  // })
+  router.replace(lastPath)
+}
 </script>

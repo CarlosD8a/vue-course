@@ -1,3 +1,4 @@
+import isAuthenticatedGuard from '@/modules/auth/guards/is-authenticated.guard';
 import NotFoud404 from '@/modules/common/pages/NotFoud404.vue';
 import LandingLayout from '@/modules/landing/layouts/LandingLayout.vue';
 import HomePage from '@/modules/landing/pages/HomePage.vue';
@@ -30,6 +31,17 @@ export const router = createRouter({
           path: '/pricing',
           name: 'pricing',
           component: () => import('@/modules/landing/pages/PricingPage.vue'), // se importa de manera peresosa
+        },
+        {
+          path: '/pokemon/:id',
+          name: 'pokemon',
+          beforeEnter: [isAuthenticatedGuard],
+          props: (route) => {
+            const idNumber = Number(route.params.id);
+            // const idNumber = +(route.params.id); usar el signo mas a la izquierda tambien lo hace numero
+            return isNaN(idNumber) ? { id: 1 } : { id: idNumber };
+          },
+          component: () => import('@/modules/pokemons/pages/PokemonPage.vue'),
         },
       ],
     },
