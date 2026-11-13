@@ -24,7 +24,7 @@ export const router = createRouter({
         },
         {
           path: '/contact',
-          name: 'contac',
+          name: 'contact',
           component: () => import('@/modules/landing/pages/ContacPage.vue'), // se importa de manera peresosa
         },
         {
@@ -35,7 +35,7 @@ export const router = createRouter({
         {
           path: '/pokemon/:id',
           name: 'pokemon',
-          beforeEnter: [isAuthenticatedGuard],
+          beforeEnter: [isAuthenticatedGuard], // aqui va los guards y pueden ser mas de uno
           props: (route) => {
             const idNumber = Number(route.params.id);
             // const idNumber = +(route.params.id); usar el signo mas a la izquierda tambien lo hace numero
