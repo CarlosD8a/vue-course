@@ -1,15 +1,15 @@
 <template>
   <dialog id="my_modal_1" class="modal" :open="open">
     <div class="modal-box">
-      <h3 class="text-lg font-bold">Hello!</h3>
-      <p class="py-4">Press ESC key or click the button below to close</p>
+      <h3 class="text-lg font-bold">{{ titulo }}</h3>
+      <p class="py-4">{{ subtitulo ?? 'Press ESC key or click the button below to close' }}</p>
       <div class="modal-action flex flex-col">
         <!-- se usa prevent para evitar que el formulario recargue la pagina como lo haria normalmente -->
         <form method="dialog" @submit.prevent="submitValue">
           <input
             ref="inputRef"
             type="text"
-            placeholder="Nombre del Proyecto"
+            :placeholder="placeholder ?? 'Ingrese un valor'"
             class="input input-bordered input-primary w-full flex-1"
             v-model="inputValue"
           />
@@ -33,6 +33,9 @@ import { ref } from 'vue';
 
 interface Props {
   open: boolean;
+  titulo: string;
+  placeholder?: string;
+  subtitulo?: string;
 }
 
 defineProps<Props>();
@@ -57,7 +60,7 @@ const submitValue = () => {
     inputRef.value?.focus();
     return;
   }
-  console.log({ value: inputValue.value });
+  // console.log({ value: inputValue.value });
   // aqui se emiten las cosas
   emit('value', inputValue.value.trim());
   emit('close');
