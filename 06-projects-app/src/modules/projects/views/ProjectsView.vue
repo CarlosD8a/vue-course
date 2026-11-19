@@ -66,9 +66,12 @@ import InputModal from '@/modules/common/components/InputModal.vue';
 import AddCircle from '@/modules/common/icons/AddCircle.vue';
 import CustomIcon from '@/modules/common/icons/customIcon.vue';
 import { ref } from 'vue';
+import { useProjecsStore } from '../stores/projectes.store';
 
 const openModal = ref(false);
 const openCustomModal = ref(false);
+
+const projectsStore = useProjecsStore();
 
 const onNewProyect = (projectName: string) => {
   console.log({ projectName });
